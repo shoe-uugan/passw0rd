@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeClosed } from "lucide-react";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 import { UserContext } from "../../../providers/UserProvider";
 import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
