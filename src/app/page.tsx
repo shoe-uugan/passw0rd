@@ -1,22 +1,33 @@
 "use client";
 
 import { useContext } from "react";
-import { UserContext } from "../../providers/UserProvider"; 
-import { useRouter } from "next/navigation";
+import { UserContext } from "../../providers/UserProvider";
+
+import { redirect } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Profile } from "@/components/profile";
 import { OwnProfile } from "@/components/ownProfile";
 import { PostPost } from "@/components/post";
+
 export default function Home() {
-  const { user, setUser } = useContext(UserContext);
-  const router = useRouter();
+ 
+  const { user, setToken, loading } = useContext(UserContext);
+
+  console.log({ user, loading });
+
+  if (loading) {
+    return <>Loading....</>;
+  }
 
   if (!user) {
-    router.replace("/signin");
+   
+    return redirect("/signin");
   }
 
   const handleLogout = () => {
-    setUser(null);
+    
+    setToken(null);
   };
 
   return (
@@ -30,8 +41,8 @@ export default function Home() {
             }
             className="w-8 h-7"
           />
-          {/* <div></div> */}
-          {/* <Button onClick={handleLogout}>Logout</Button> */}
+          <div></div>
+          <Button onClick={handleLogout}>Logout</Button>
           <img
             src={
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOvLl5UuxKRaI5MSMnC4_ujRJnHLeaYY3XFQ&s"

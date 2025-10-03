@@ -6,18 +6,19 @@ import { Eye, EyeClosed } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { UserContext } from "../../../providers/UserProvider";
 import { useContext, useState } from "react";
-import { useRouter } from "next/navigation";
+
+import { redirect } from "next/navigation";
+
 
 const SingInPage = () => {
-  const { user, setUser } = useContext(UserContext);
-  const router = useRouter();
+  const { user, setToken } = useContext(UserContext);
 
   const [passwordShown, setPasswordShown] = useState(false);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
 
   if (user) {
-    router.replace("/");
+     return redirect("/");
   }
 
   const handleSignin = async () => {
@@ -33,10 +34,11 @@ const SingInPage = () => {
 
     if (response.ok) {
       toast.success(data.message);
-      setUser(data.body);
+       setToken(data.body);
     } else {
       toast.error(data.message);
     }
+
   };
 
   return (
