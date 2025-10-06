@@ -43,6 +43,7 @@ export const UserContextProvider = ({ children }: React.PropsWithChildren) => {
       },
     });
     if (response.status !== 200) {
+      console.log("good")
       setUser(null);
       setToken(null);
       localStorage.setItem("authToken", "null");
