@@ -8,18 +8,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Profile } from "@/components/profile";
 import { OwnProfile } from "@/components/ownProfile";
-import { PostPost } from "@/components/post";
-import { Heart, SquarePlus } from "lucide-react";
+import { PostPost } from "@/components/postCard";
 
-
-type Post = {
-  _id: string;
-  imageUrl: string;
-  description: string;
-};
+import { Heart, SquarePlus} from "lucide-react";
 
 export default function Home() {
- const [posts, setPosts] = useState<Post[]>([]);
   const { user, setToken, loading } = useContext(UserContext);
 
   console.log({ user, loading });
@@ -27,7 +20,6 @@ export default function Home() {
    fetch("http://localhost:5500/posts")
      .then((res) => res.json())
      .then((data) => {
-       setPosts(data);
      });
  }, []);
 
@@ -63,13 +55,8 @@ export default function Home() {
       <div className="p-2 flex gap-4"></div>
 
       <div className="w-[600px] flex flex-col gap-4 mx-auto">
-        {posts.map((post) => (
-          <div key={post._id} className="mb-4 border-b py-4">
-            
-            <img src={post.imageUrl} alt="" />
-            {post.description}
-          </div>
-        ))}
+
+     <PostPost/>
       </div>
     </div>
   );
