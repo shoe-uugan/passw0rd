@@ -33,12 +33,12 @@ export default function Home() {
   }
 
   const handleLogout = () => {
-    
     setToken(null);
   };
 
   return (
     <div className="rounded font-[500] text-[30px]">
+        {/* <Button onClick={handleLogout} >Logout</Button> */}
       <div className="p-2 flex flex-row justify-between ">
         <div className="text-white font-display ">Instagram</div>
         <div className="p-2 flex gap-8">
@@ -49,7 +49,7 @@ export default function Home() {
             <SquarePlus size={24} className="text-white"/>
           </Link>
                 <Heart className="text-white" />
-          {/* <Button onClick={handleLogout}>Logout</Button> */}
+        
         </div>
       </div>
       <div className="p-2 flex gap-4"></div>
