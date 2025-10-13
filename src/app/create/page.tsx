@@ -9,11 +9,15 @@ import { useContext, useState } from "react";
 import { toast } from "sonner";
 import { UserContext } from "../../../providers/UserProvider";
 
+// AIzaSyBB7o2QTdmhIUyctBUZVuUeL7Yzd--fyS8
+
+
 const Page = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
   const router = useRouter();
 const {token}=useContext(UserContext)
+
 
   const handleSubmit = async () => {
     const response = await fetch("http://localhost:5500/posts", {

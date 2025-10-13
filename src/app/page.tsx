@@ -10,10 +10,10 @@ import { Profile } from "@/components/profile";
 import { OwnProfile } from "@/components/ownProfile";
 import { PostPost } from "@/components/postCard";
 
-import { Heart, SquarePlus} from "lucide-react";
+import { Ghost, Heart, SquarePlus} from "lucide-react";
 
 export default function Home() {
-  const { user, setToken, loading } = useContext(UserContext);
+  const { user, setToken, loading} = useContext(UserContext);
 
   console.log({ user, loading });
  useEffect(() => {
@@ -33,12 +33,14 @@ export default function Home() {
   }
 
   const handleLogout = () => {
+   
     setToken(null);
+     console.log(user)
   };
 
   return (
     <div className="rounded font-[500] text-[30px]">
-        {/* <Button onClick={handleLogout} >Logout</Button> */}
+        {/* <Button onClick={handleLogout}>Logout</Button> */}
       <div className="p-2 flex flex-row justify-between ">
         <div className="text-white font-display ">Instagram</div>
         <div className="p-2 flex gap-8">
@@ -57,6 +59,8 @@ export default function Home() {
       <div className="w-[600px] flex flex-col gap-4 mx-auto">
 
      <PostPost/>
+
+
       </div>
     </div>
   );

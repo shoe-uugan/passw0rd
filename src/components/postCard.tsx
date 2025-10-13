@@ -36,15 +36,16 @@ export const PostPost = () => {
       const handleProfile=()=>{
         noProfile(!profile)
       }
+     
   return (
     <div>
       {posts.map((post) => (
         <div key={post._id} className="mb-4 py-4">
           <div className="flex flex-row gap-2 pb-2">
             <HatGlasses
-              fill="black"
+              fill="white"
               color="black"
-              className="border rounded-full bg-white self-center"
+              className="border rounded-full border bg-white self-center"
               style={{
                 opacity: profile ? "0%" : "100%",
               }}
@@ -59,9 +60,13 @@ export const PostPost = () => {
           />
 
           <div className="flex gap-5 pt-5">
-            <Link href={"/comments"}>
+            {/* <Link href={"/comments"}> */}
+              <a
+        href={`/comments/${post._id}` }
+      >
               <MessageCircle />
-            </Link>
+              </a>
+            {/* </Link> */}
             <Heart
             // onClick={handleLike}
             // style={{
