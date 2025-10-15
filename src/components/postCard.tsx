@@ -4,9 +4,14 @@
 import { Heart, MessageCircle, Send, Bookmark, HatGlasses } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import axios from "axios";
+
+dayjs.extend(relativeTime);
 
 type User = {
-  username: string
+  username: string,
 }
 
 type Post = {
@@ -14,8 +19,8 @@ type Post = {
   _id: string;
   imageUrl: string;
   description: string;
+  createdAt: string;
 };
-
 
 export const PostPost = () => {
      const [posts, setPosts] = useState<Post[]>([]);
@@ -36,7 +41,7 @@ export const PostPost = () => {
       const handleProfile=()=>{
         noProfile(!profile)
       }
-     
+
   return (
     <div>
       {posts.map((post) => (
@@ -51,6 +56,7 @@ export const PostPost = () => {
               }}
             />
             <div className="text-[22px]"> {post.createdBy.username}</div>
+            <div className="text-[12px] pl-2 content-center opacity-50 pt-2">• {dayjs().to(post.createdAt)}</div>
           </div>
 
           <img
