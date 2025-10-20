@@ -1,20 +1,12 @@
 "use client";
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-type User = {
-  _id: string;
-  username: string;
-  fullname: string;
-  password: string;
-
-  email: string | null;
-  phone: string | null;
-};
+import { User } from "./types";
 
 type UserContextType = {
   user: User | null;
-  
+
   token: string | null;
   loading: boolean;
   setToken: (token: string | null) => void;
@@ -22,7 +14,7 @@ type UserContextType = {
 
 export const UserContext = createContext<UserContextType>({
   user: null,
- 
+
   token: null,
   loading: true,
   setToken: () => {},
@@ -31,8 +23,7 @@ export const UserContext = createContext<UserContextType>({
 export const UserContextProvider = ({ children }: React.PropsWithChildren) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
- 
-   
+
   const [token, setToken] = useState<string | null>(null);
 
   const authenticateUser = async () => {
@@ -43,7 +34,7 @@ export const UserContextProvider = ({ children }: React.PropsWithChildren) => {
       },
     });
     if (response.status !== 200) {
-      console.log("good")
+      console.log("good");
       setUser(null);
       setToken(null);
       localStorage.setItem("authToken", "null");
@@ -74,4 +65,9 @@ export const UserContextProvider = ({ children }: React.PropsWithChildren) => {
       {children}
     </UserContext.Provider>
   );
+};
+
+export const useUser = () => {
+  const ctx = useContext(UserContext);
+  return ctx;
 };

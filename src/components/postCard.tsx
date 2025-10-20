@@ -1,95 +1,115 @@
-"use client";
-
-
-import { Heart, MessageCircle, Send, Bookmark, HatGlasses } from "lucide-react";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import axios from "axios";
+import { Post } from "../../providers/types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import axios from "axios";
+
+import { toast } from "sonner";
+import { useUser } from "../../providers/UserProvider";
+import { useState, useEffect } from "react";
+import { useAxios } from "../../hooks/useAxios";
+import { Heart } from "lucide-react";
 
 dayjs.extend(relativeTime);
 
-type User = {
-  username: string,
-}
+export const PostCard = ({ post }: { post: Post }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [totalComments, setTotalComments] = useState(3);
 
-type Post = {
-  createdBy: User;
-  _id: string;
-  imageUrl: string;
-  description: string;
-  createdAt: string;
-};
+  const axios = useAxios();
 
-export const PostPost = () => {
-     const [posts, setPosts] = useState<Post[]>([]);
-     const [liked, notLiked] = useState(false)
-     const [profile, noProfile] = useState(false)
-      useEffect(() => {
-        fetch("http://localhost:5500/posts")
-          .then((res) => res.json())
-          .then((data) => {
-            setPosts(data);
-          });
-      }, []);
-     
-      const handleLike=()=>{
-        notLiked(!liked) 
-      }
+  const [text, setText] = useState("");
+  const [comments, setComments] = useState(post.comments);
 
-      const handleProfile=()=>{
-        noProfile(!profile)
-      }
+   const { user } = useUser();
+
+   useEffect(() => {
+     if (user) {
+       const userId = user._id;
+       setIsLiked(post.likes.some((like) => like.createdBy._id === userId));
+     }
+   }, [user]);
+
+  const handleSubmitComment = async () => {
+   const response = await axios.post(`/posts/${post._id}/comments`, { text });
+    if (response.status === 200) {
+      setText("");
+      setComments([...comments, response.data]);
+    } else {
+      toast.error("error");
+    }
+  };
 
   return (
-    <div>
-      {posts.map((post) => (
-        <div key={post._id} className="mb-4 py-4">
-          <div className="flex flex-row gap-2 pb-2">
-            <HatGlasses
-              fill="white"
-              color="black"
-              className="border rounded-full border bg-white self-center"
-              style={{
-                opacity: profile ? "0%" : "100%",
-              }}
-            />
-            <div className="text-[22px]"> {post.createdBy.username}</div>
-            <div className="text-[12px] pl-2 content-center opacity-50 pt-2">• {dayjs().to(post.createdAt)}</div>
-          </div>
+    <div key={post._id} className="mb-4 border-b py-4">
+      <div className="flex justify-between">
+        <div className="font-bold text-[17px] pb-2">
+          {post.createdBy.username}
+        </div>
+        <div className="text-[12px]">{dayjs(post.createdAt).fromNow()}</div>
+      </div>
+      <img src={post.imageUrl} alt="" className="w-200" />
+      <div className="flex flex-row gap-1 pt-2">
+        <div className="flex ">
+          <div
+            className="hover:opacity-60 cursor-pointer"
+            onClick={async () => {
+              const response = await axios.post(`/posts/${post._id}/like`);
+              setIsLiked(response.data.isLiked);
 
-          <img
-            className="w-150 object-cover object-center"
-            src={post.imageUrl}
-            alt=""
-          />
-
-          <div className="flex gap-5 pt-5">
-            {/* <Link href={"/comments"}> */}
-              <a
-        href={`/comments/${post._id}` }
-      >
-              <MessageCircle />
-              </a>
-            {/* </Link> */}
-            <Heart
-            // onClick={handleLike}
-            // style={{
-            //   fill: liked ? "none" : "red",
-            //   color: liked ? "white" : "red",
-            //   cursor: "pointer",
-            // }}
-            />
-            <Send />
+              if (response.data.isLiked) {
+                setLikeCount(likeCount + 1);
+              } else {
+                setLikeCount(likeCount - 1);
+              }
+            }}
+          >
+            {isLiked ? <Heart fill="red" stroke="red" /> : <Heart />}
           </div>
-          <div className="flex justify-between">
-            <div></div>
-            <Bookmark size={34} />
-          </div>
-          <div className="text-[18px]"> {post.description}</div>
+        </div>
+        <div className="text-[15px]">{likeCount} likes</div>
+      </div>
+      {/* <hr /> */}
+      <div>
+        <b className="text-[17px]">{post.createdBy.username}</b>
+        <b className="text-[17px] font-[500] opacity-70">
+          {" "}
+          {post.description}{" "}
+        </b>
+      </div>
+      {comments.slice(0, totalComments).map((comment) => (
+        <div key={comment._id}>
+          <b className="text-[12px]">{comment.createdBy.username}: </b>
+          <b className="text-[12px]">{comment.text} </b>
         </div>
       ))}
+      {comments.length > 3 && (
+        <div
+          onClick={() => {
+            setTotalComments(100);
+          }}
+          className="hover:underline cursor-pointer"
+        >
+          View all comments
+        </div>
+      )}
+      <div className="relative">
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Add a comment"
+          className="w-full resize-none text-[15px] pl-2"
+          rows={1}
+        />
+        {text.length > 0 && (
+          <div
+            onClick={handleSubmitComment}
+            className="absolute hover:underline cursor-pointer right-1 top-3 font-bold text-[12px] pb-2"
+          >
+            Post
+          </div>
+        )}
+      </div>
     </div>
   );
 };
