@@ -7,13 +7,15 @@ import { toast } from "sonner";
 import { useUser } from "../../providers/UserProvider";
 import { useState, useEffect } from "react";
 import { useAxios } from "../../hooks/useAxios";
-import { Heart } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
 export const PostCard = ({ post }: { post: Post }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [commentCount, setCommentCount] =useState(post.comments.length) 
   const [totalComments, setTotalComments] = useState(3);
 
   const axios = useAxios();
@@ -29,7 +31,7 @@ export const PostCard = ({ post }: { post: Post }) => {
        setIsLiked(post.likes.some((like) => like.createdBy._id === userId));
      }
    }, [user]);
-
+   
   const handleSubmitComment = async () => {
    const response = await axios.post(`/posts/${post._id}/comments`, { text });
     if (response.status === 200) {
@@ -40,38 +42,49 @@ export const PostCard = ({ post }: { post: Post }) => {
     }
   };
 
+  
   return (
     <div key={post._id} className="mb-4 border-b py-4">
       <div className="flex justify-between">
-        <div className="font-bold text-[17px] pb-2">
-          {post.createdBy.username}
-        </div>
+        <Link href={`/${post.createdBy.username}`}>
+          <div className="font-bold text-[17px] pb-2">
+            {post.createdBy.username}
+          </div>
+        </Link>
         <div className="text-[12px]">{dayjs(post.createdAt).fromNow()}</div>
       </div>
-      <img src={post.imageUrl} alt="" className="w-200" />
-      <div className="flex flex-row gap-1 pt-2">
-        <div className="flex ">
-          <div
-            className="hover:opacity-60 cursor-pointer"
-            onClick={async () => {
-              const response = await axios.post(`/posts/${post._id}/like`);
-              setIsLiked(response.data.isLiked);
+      <img src={post.imageUrl} alt="" className="w-200 pb-2" />
+      <div className="flex flex-row gap-4">
+        <div className="flex flex-row gap-1">
+          <div className="flex ">
+            <div
+              className="hover:opacity-60 cursor-pointer"
+              onClick={async () => {
+                const response = await axios.post(`/posts/${post._id}/like`);
+                setIsLiked(response.data.isLiked);
 
-              if (response.data.isLiked) {
-                setLikeCount(likeCount + 1);
-              } else {
-                setLikeCount(likeCount - 1);
-              }
-            }}
-          >
-            {isLiked ? <Heart fill="red" stroke="red" /> : <Heart />}
+                if (response.data.isLiked) {
+                  setLikeCount(likeCount + 1);
+                } else {
+                  setLikeCount(likeCount - 1);
+                }
+              }}
+            >
+              {isLiked ? <Heart fill="red" stroke="red" /> : <Heart />}
+            </div>
           </div>
+          <div className="text-[15px]">{likeCount} likes</div>
         </div>
-        <div className="text-[15px]">{likeCount} likes</div>
+        <div className="flex flex-row gap-1">
+          <MessageCircle className="flex " />{" "}
+          <div className="text-[15px]">{commentCount} comments</div>
+        </div>
       </div>
       {/* <hr /> */}
       <div>
+         <Link href={`/${post.createdBy.username}`}> 
         <b className="text-[17px]">{post.createdBy.username}</b>
+        </Link>
         <b className="text-[17px] font-[500] opacity-70">
           {" "}
           {post.description}{" "}

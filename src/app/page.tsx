@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 // import { OwnProfile } from "@/components/ownProfile";
 import { PostCard } from "@/components/postCard";
 import { Post } from "../../providers/types";
-import { Ghost, Heart, SquarePlus } from "lucide-react";
+import { Ghost, Heart, SquarePlus, User } from "lucide-react";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -40,8 +40,12 @@ export default function Home() {
 
       <div className="p-2 flex flex-row justify-between ">
         <div className="text-white font-display ">Instagram</div>
+      
         <div className="p-2 flex gap-8">
           <div></div>
+  <Link href={`/${user.username}` }> 
+            <User/>
+</Link>
           <Link href={"/create"}>
             <SquarePlus size={24} className="text-white" />
           </Link>
