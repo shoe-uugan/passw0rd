@@ -30,3 +30,9 @@ export type Post = {
   comments: PostComment[];
   likes: PostLike[];
 };
+export type UserFollow={
+  _id: string;
+  user: string;
+  createdBy: string;
+  createdAt: string;
+}

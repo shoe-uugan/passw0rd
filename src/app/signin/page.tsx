@@ -4,11 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeClosed } from "lucide-react";
 import { toast, Toaster } from "sonner";
-import { UserContext } from "../../../providers/UserProvider";
+import { UserContext } from "../providers/UserProvider";
 import { useContext, useState } from "react";
 
 import { redirect } from "next/navigation";
-
 
 const SingInPage = () => {
   const { user, setToken } = useContext(UserContext);
@@ -18,7 +17,7 @@ const SingInPage = () => {
   const [password, setPassword] = useState("");
 
   if (user) {
-     return redirect("/");
+    return redirect("/");
   }
 
   const handleSignin = async () => {
@@ -34,11 +33,10 @@ const SingInPage = () => {
 
     if (response.ok) {
       toast.success(data.message);
-       setToken(data.body);
+      setToken(data.body);
     } else {
       toast.error(data.message);
     }
-
   };
 
   return (

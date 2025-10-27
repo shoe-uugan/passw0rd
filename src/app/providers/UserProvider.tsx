@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { User } from "./types";
+import { User } from "../../components/types";
 
 type UserContextType = {
   user: User | null;

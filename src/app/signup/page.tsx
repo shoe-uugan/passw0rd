@@ -34,7 +34,7 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [fullname, setFullname] = useState("")
 
   return (
     <div className="mx-auto w-screen h-screen flex flex-col justify-center items-center">
@@ -49,7 +49,6 @@ export default function Home() {
             <Toaster position="top-right" theme="dark" />
             {step == 1 && (
               <div className="flex gap-1 flex-wrap">
-                
                 <Input
                   type=""
                   placeholder="Email"
@@ -83,7 +82,7 @@ export default function Home() {
               </div>
             )}
             {step == 2 && (
-              <div>
+              <div className="flex gap-1 flex-col">
                 <Input
                   placeholder="username"
                   value={username}
@@ -92,18 +91,13 @@ export default function Home() {
                   }}
                   className="w-50 border h-9 border-black rounded bg-white pl-2"
                 />
-              </div>
-            )}
-            {step == 3 && (
-              <div>
-                <div>Birthdate</div>
                 <Input
-                  placeholder="YYYY/MM/DD"
-                  value={birthdate}
-                  className="w-50 border h-9 border-black rounded bg-white pl-2"
+                  placeholder="full name"
+                  value={fullname}
                   onChange={(e) => {
-                    setBirthdate(e.target.value);
+                    setFullname(e.target.value);
                   }}
+                  className="w-50 border h-9 border-black rounded bg-white pl-2"
                 />
               </div>
             )}
@@ -113,12 +107,12 @@ export default function Home() {
                 prev
               </Button>
             )}
-            {step != 3 && (
+            {step != 2 && (
               <Button className="w-30" onClick={handleNextStep}>
                 next
               </Button>
             )}
-            {step == 3 && (
+            {step == 2 && (
               <Button className="w-30" onClick={handleSubmit}>
                 submit
               </Button>

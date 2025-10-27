@@ -1,12 +1,12 @@
 import axios from "axios";
-import { Post } from "../../providers/types";
+import { Post } from "./types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { toast } from "sonner";
-import { useUser } from "../../providers/UserProvider";
+import { useUser } from "../app/providers/UserProvider";
 import { useState, useEffect } from "react";
-import { useAxios } from "../../hooks/useAxios";
+import { useAxios } from "../app/hooks/useAxios";
 import { Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ dayjs.extend(relativeTime);
 export const PostCard = ({ post }: { post: Post }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
-  const [commentCount, setCommentCount] =useState(post.comments.length) 
+  const [commentCount, setCommentCount] = useState(post.comments.length);
   const [totalComments, setTotalComments] = useState(3);
 
   const axios = useAxios();
@@ -23,17 +23,17 @@ export const PostCard = ({ post }: { post: Post }) => {
   const [text, setText] = useState("");
   const [comments, setComments] = useState(post.comments);
 
-   const { user } = useUser();
+  const { user } = useUser();
 
-   useEffect(() => {
-     if (user) {
-       const userId = user._id;
-       setIsLiked(post.likes.some((like) => like.createdBy._id === userId));
-     }
-   }, [user]);
-   
+  useEffect(() => {
+    if (user) {
+      const userId = user._id;
+      setIsLiked(post.likes.some((like) => like.createdBy._id === userId));
+    }
+  }, [user]);
+
   const handleSubmitComment = async () => {
-   const response = await axios.post(`/posts/${post._id}/comments`, { text });
+    const response = await axios.post(`/posts/${post._id}/comments`, { text });
     if (response.status === 200) {
       setText("");
       setComments([...comments, response.data]);
@@ -42,7 +42,6 @@ export const PostCard = ({ post }: { post: Post }) => {
     }
   };
 
-  
   return (
     <div key={post._id} className="mb-4 border-b py-4">
       <div className="flex justify-between">
@@ -82,8 +81,8 @@ export const PostCard = ({ post }: { post: Post }) => {
       </div>
       {/* <hr /> */}
       <div>
-         <Link href={`/${post.createdBy.username}`}> 
-        <b className="text-[17px]">{post.createdBy.username}</b>
+        <Link href={`/${post.createdBy.username}`}>
+          <b className="text-[17px]">{post.createdBy.username}</b>
         </Link>
         <b className="text-[17px] font-[500] opacity-70">
           {" "}
