@@ -61,10 +61,13 @@ const Page = () => {
 
       const formData = new FormData();
       formData.append("file", selectedFile);
+
       const uploadResponse = await fetch("/api/file", {
         method: "POST",
         body: formData,
       });
+
+      console.log(uploadResponse);
 
       if (!uploadResponse.ok) {
         throw new Error("Failed to upload image");

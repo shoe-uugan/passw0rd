@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { Post } from "./types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -9,13 +9,14 @@ import { useState, useEffect } from "react";
 import { useAxios } from "../app/hooks/useAxios";
 import { Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
 
 export const PostCard = ({ post }: { post: Post }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
-  const [commentCount, setCommentCount] = useState(post.comments.length);
+  // const [commentCount, setCommentCount] = useState(post.comments.length);
   const [totalComments, setTotalComments] = useState(3);
 
   const axios = useAxios();
@@ -52,7 +53,7 @@ export const PostCard = ({ post }: { post: Post }) => {
         </Link>
         <div className="text-[12px]">{dayjs(post.createdAt).fromNow()}</div>
       </div>
-      <img src={post.imageUrl} alt="" className="w-200 pb-2" />
+      <Image src={post.imageUrl} alt="" className="w-200 pb-2" />
       <div className="flex flex-row gap-4">
         <div className="flex flex-row gap-1">
           <div className="flex ">
@@ -76,7 +77,7 @@ export const PostCard = ({ post }: { post: Post }) => {
         </div>
         <div className="flex flex-row gap-1">
           <MessageCircle className="flex " />{" "}
-          <div className="text-[15px]">{commentCount} comments</div>
+          {/* <div className="text-[15px]">{commentCount} comments</div> */}
         </div>
       </div>
       {/* <hr /> */}

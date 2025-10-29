@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Stepper } from "@/components/Stepper";
 import { Button } from "@/components/ui/button";
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
 import { Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 

@@ -4,12 +4,11 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAxios } from "../hooks/useAxios";
 import { User } from "../../components/types";
-import { Circle } from "lucide-react";
-import { Post } from "../../components/types";
-import { UserFollow } from "../../components/types";
-import { PostCard } from "@/components/postCard";
+import { ArrowLeft, Circle } from "lucide-react";
 
-const Page = ({ post }: { post: Post }) => {
+import Link from "next/link";
+
+const Page = () => {
   const { username } = useParams();
   const [user, setUser] = useState<User | null>(null);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -42,7 +41,10 @@ const Page = ({ post }: { post: Post }) => {
     <>
       <div className="w-screen bg-neutral-800 h-[30vh] rounded">
         <div>
-          <div className="flex flex-row pt-10 pl-10">
+          <Link href={"/"}> 
+          <div className="p-2" > <ArrowLeft></ArrowLeft> </div>
+          </Link>
+          <div className="flex flex-row pl-10">
             <Circle className="" size={180} />
 
             <div className="pt-4 pl-5 text-[20px]">
