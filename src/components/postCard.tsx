@@ -53,7 +53,7 @@ export const PostCard = ({ post }: { post: Post }) => {
         </Link>
         <div className="text-[12px]">{dayjs(post.createdAt).fromNow()}</div>
       </div>
-      <Image src={post.imageUrl} alt="" className="w-200 pb-2" />
+      <img src={post.imageUrl} alt="" className="w-200 pb-2" />
       <div className="flex flex-row gap-4">
         <div className="flex flex-row gap-1">
           <div className="flex ">
