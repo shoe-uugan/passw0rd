@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useAxios } from "../hooks/useAxios";
 import { User } from "../../components/types";
 import { ArrowLeft, Circle } from "lucide-react";
-
+import { Post } from "../../components/types";
 import Link from "next/link";
+import { PostCard } from "@/components/postCard";
 
 const Page = () => {
   const { username } = useParams();
@@ -14,9 +15,19 @@ const Page = () => {
   const [isNotFound, setIsNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ifFollowing, setIfFollowing] = useState(false);
+   const [posts, setPosts] = useState<Post[]>([]);
   // const [followingCount, setFollowingCount] = useState()
   // const [followerCount, setFollowerCount] = useState();
   const axios = useAxios();
+
+
+  useEffect(() => {
+    fetch("http://localhost:5500/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -50,7 +61,6 @@ const Page = () => {
             <div className="pt-4 pl-5 text-[20px]">
               <div className="text-[30px] font-[700]"> {user?.username} </div>
               {user?.fullname}
-
               <div className="pt-10 flex flex-row gap-20">
                 <div>posts</div>
                 <div>followers</div>
@@ -77,6 +87,9 @@ const Page = () => {
         Post{" "}
       </div>
       <hr></hr>
+       {posts.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
     </>
   );
 };
