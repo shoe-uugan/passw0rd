@@ -8,6 +8,7 @@ import { ArrowLeft, Circle } from "lucide-react";
 import { Post } from "../../components/types";
 import Link from "next/link";
 import { PostCard } from "@/components/postCard";
+import { stringify } from "querystring";
 
 const Page = () => {
   const { username } = useParams();
@@ -48,12 +49,20 @@ const Page = () => {
   if (loading) return <>Loading...</>;
   if (isNotFound) return <>User with username {username} not found!</>;
 
+posts.map(
+        (post) => console.log(post.createdBy.username))
+console.log(JSON.stringify(user?.username));
+
+
   return (
     <>
       <div className="w-screen bg-neutral-800 h-[30vh] rounded">
         <div>
-          <Link href={"/"}> 
-          <div className="p-2" > <ArrowLeft></ArrowLeft> </div>
+          <Link href={"/"}>
+            <div className="p-2">
+              {" "}
+              <ArrowLeft></ArrowLeft>{" "}
+            </div>
           </Link>
           <div className="flex flex-row pl-10">
             <Circle className="" size={180} />
@@ -67,31 +76,47 @@ const Page = () => {
                 <div>following</div>
               </div>
 
-              <div className="flex gap-5 justify-center pt-6">
-                <div className="bg-neutral-700 rounded w-50 flex justify-center">
-                  Follow
-                </div>
+              {username == user?.username ? (
+                <div className="flex gap-5 justify-center pt-6">
+                  <div className="bg-neutral-700 rounded w-50 flex justify-center">
+                    Follow
+                  </div>
 
-                <div className="bg-neutral-700 rounded w-50 flex justify-center">
-                  {" "}
-                  Messsage
+                  <div className="bg-neutral-700 rounded w-50 flex justify-center">
+                    {" "}
+                    Messsage
+                  </div>
                 </div>
-              </div>
+              ) : (
+                  <div className="flex gap-5 justify-center pt-6">
+                <div className="bg-neutral-700 rounded w-110 flex justify-center">
+                  Edit
+                </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
       <hr></hr>
-      <div className="bg-neutral-800 flex justify-center font-[300]">
-        {" "}
-        Post{" "}
-      </div>
+      <div className="bg-neutral-800 flex justify-center font-[300]">Post</div>
       <hr></hr>
-       {posts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
+      <div className="flex ">
+        {posts
+          .filter((post) => post.createdBy.username === user?.username)
+
+          .map((post) => (
+            <div key={post._id}>
+              <img
+                src={post.imageUrl}
+                className="h-90 w-70 object-cover flex flex-row hover:opacity-50"
+              ></img>
+            </div>
+          ))}
+      </div>
     </>
   );
 };
 
 export default Page;
+
