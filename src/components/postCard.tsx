@@ -76,7 +76,12 @@ export const PostCard = ({ post }: { post: Post }) => {
           <div className="text-[15px]">{likeCount} likes</div>
         </div>
         <div className="flex flex-row gap-1">
-          <MessageCircle className="flex " />{" "}
+            <Link href={`/comments/${post._id}`}>
+              
+              <MessageCircle />
+              
+            </Link>
+          {/* <MessageCircle className="flex " />{" "} */}
           {/* <div className="text-[15px]">{commentCount} comments</div> */}
         </div>
       </div>

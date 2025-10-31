@@ -1,12 +1,14 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Stepper } from "@/components/Stepper";
 import { Button } from "@/components/ui/button";
-import { Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 import { Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { UserContext } from "../providers/UserProvider";
+import { redirect } from "next/navigation";
 
 export default function Home() {
   const [step, setSteps] = useState<number>(1);
@@ -31,10 +33,37 @@ export default function Home() {
   };
 
   const [passwordShown, setPasswordShown] = useState(false);
-  const [email, setEmail] = useState("");
+  const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("")
+
+ const { user, setToken } = useContext(UserContext);
+
+
+  if (user) {
+    return redirect("/");
+  }
+
+  const handleSignup = async () => {
+    const response = await fetch("http://localhost:5500/signup", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ username, password, credential, fullname }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.message);
+      setToken(data.body);
+    } else {
+      toast.error(data.message);
+    }
+  };
+
 
   return (
     <div className="mx-auto w-screen h-screen flex flex-col justify-center items-center">
@@ -50,11 +79,10 @@ export default function Home() {
             {step == 1 && (
               <div className="flex gap-1 flex-wrap">
                 <Input
-                  type=""
-                  placeholder="Email"
-                  value={email}
+                  placeholder="Username"
+                  value={username}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setUsername(e.target.value);
                   }}
                   className="w-50 h-9 border border-black rounded bg-white pl-2"
                 />
@@ -83,13 +111,13 @@ export default function Home() {
             )}
             {step == 2 && (
               <div className="flex gap-1 flex-col">
-                <Input
-                  placeholder="username"
-                  value={username}
+                   <Input
+                  placeholder="Email or Phone"
+                  value={credential}
                   onChange={(e) => {
-                    setUsername(e.target.value);
+                    setCredential(e.target.value);
                   }}
-                  className="w-50 border h-9 border-black rounded bg-white pl-2"
+                  className="w-50 h-9 border border-black rounded bg-white pl-2"
                 />
                 <Input
                   placeholder="full name"
@@ -113,7 +141,7 @@ export default function Home() {
               </Button>
             )}
             {step == 2 && (
-              <Button className="w-30" onClick={handleSubmit}>
+              <Button className="w-30" onClick={handleSignup}>
                 submit
               </Button>
             )}
