@@ -42,11 +42,11 @@ export default function Home() {
 
 
   if (user) {
-    // return redirect("/");
+    return redirect("/");
   }
 
   const handleSignup = async () => {
-    const response = await fetch("http://localhost:5500/signup", {
+    const response = await fetch( process.env.NEXT_PUBLIC_API_URL + "/signup", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,23 +62,6 @@ export default function Home() {
     } else {
       toast.error(data.message);
     }
-
-     const respons = await fetch("http://localhost:5500/signin", {
-       headers: {
-         "Content-Type": "application/json",
-       },
-       method: "POST",
-       body: JSON.stringify({ credential, password }),
-     });
-
-     const datar = await respons.json();
-
-     if (response.ok) {
-       toast.success(datar.message);
-       setToken(datar.body);
-     } else {
-       toast.error(datar.message);
-     }
   };
 
 

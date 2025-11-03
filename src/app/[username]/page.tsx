@@ -21,13 +21,13 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [following, setFollowing] = useState(false);
    const [posts, setPosts] = useState<Post[]>([]);
-  const [followingCount, setFollowingCount] = useState(Number)
-  const [followerCount, setFollowerCount] = useState(Number);
+  const [followingCount, setFollowingCount] = useState<number>(0)
+  const [followerCount, setFollowerCount] = useState<number>(0)
   const axios = useAxios();
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetch("http://localhost:5500/posts")
+    fetch( process.env.NEXT_PUBLIC_API_URL +"/posts")
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);
@@ -36,7 +36,7 @@ const Page = () => {
 
 
   useEffect(() => {
-    fetch(`http://localhost:5500/users/${username}/follow`)
+    fetch(process.env.NEXT_PUBLIC_API_URL +`/users/${username}/follow`)
       .then((res) => res.json())
       .then((data) => {
         setFollowing(data);
@@ -46,7 +46,7 @@ console.log(following)
 
 
   useEffect(() => {
-    fetch(`http://localhost:5500/users/${username}/followings`)
+    fetch(process.env.NEXT_PUBLIC_API_URL + `/${username}/followings`)
       .then((res) => res.json())
       .then((data) => {
         setFollowingCount(data);
@@ -56,7 +56,7 @@ console.log(following)
 
 
   useEffect(() => {
-    fetch(`http://localhost:5500/users/${username}/followers`)
+    fetch(process.env.NEXT_PUBLIC_API_URL + `/users/${username}/followers`)
       .then((res) => res.json())
       .then((data) => {
         setFollowerCount(data);
@@ -106,8 +106,8 @@ console.log(userd)
               {userd?.fullname}
               <div className="pt-10 flex flex-row gap-20">
                 <div>posts</div>
-                <div>followers {followerCount}</div>
-                <div>following {followingCount}</div>
+                <div>followers {followerCount }</div>
+                <div>following {followingCount }</div>
               </div>
 
               {user?.username !== userd?.username ? (
