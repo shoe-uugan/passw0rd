@@ -12,14 +12,17 @@ import { stringify } from "querystring";
 import { UserContext } from "../providers/UserProvider";
 
 const Page = () => {
+
+
+  
   const { username } = useParams();
   const [userd, setUser] = useState<User | null>(null);
   const [isNotFound, setIsNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [ifFollowing, setIfFollowing] = useState(false);
+  const [following, setFollowing] = useState(false);
    const [posts, setPosts] = useState<Post[]>([]);
-  // const [followingCount, setFollowingCount] = useState()
-  // const [followerCount, setFollowerCount] = useState();
+  const [followingCount, setFollowingCount] = useState(Number)
+  const [followerCount, setFollowerCount] = useState(Number);
   const axios = useAxios();
   const { user } = useContext(UserContext);
 
@@ -30,6 +33,36 @@ const Page = () => {
         setPosts(data);
       });
   }, []);
+
+
+  useEffect(() => {
+    fetch(`http://localhost:5500/users/${username}/follow`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFollowing(data);
+      });
+  }, []);
+console.log(following)
+
+
+  useEffect(() => {
+    fetch(`http://localhost:5500/users/${username}/followings`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFollowingCount(data);
+      });
+  }, []);
+  console.log(followingCount);
+
+
+  useEffect(() => {
+    fetch(`http://localhost:5500/users/${username}/followers`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFollowerCount(data);
+      });
+  }, []);
+  console.log(followerCount);
 
   useEffect(() => {
     axios
@@ -47,13 +80,14 @@ const Page = () => {
       });
   }, []);
 
+  
+console.log(userd)
   if (loading) return <>Loading...</>;
   if (isNotFound) return <>User with username {username} not found!</>;
 
 
-
-console.log(userd?.username)
-console.log(user?.username)
+// console.log(userd?.username)
+// console.log(user?.username)
   return (
     <>
       <div className="w-screen bg-neutral-800 h-[30vh] rounded">
@@ -72,14 +106,30 @@ console.log(user?.username)
               {userd?.fullname}
               <div className="pt-10 flex flex-row gap-20">
                 <div>posts</div>
-                <div>followers</div>
-                <div>following</div>
+                <div>followers {followerCount}</div>
+                <div>following {followingCount}</div>
               </div>
 
               {user?.username !== userd?.username ? (
                 <div className="flex gap-5 justify-center pt-6">
-                  <div className="bg-neutral-700 rounded w-50 flex justify-center">
-                    Follow
+
+                  <div className="bg-neutral-700 rounded w-50 flex justify-center hover:opacity-60 cursor-pointer"
+
+                        onClick={async () => {
+                          const response = await axios.post(
+                            `/users/${username}/follow`
+                          );
+                          setFollowing(response.data.following);
+
+                          if (response.data.following ) {
+                            setFollowing(following);
+                          } else {
+                            setFollowing(!following);
+                          }
+                        }}
+                      >
+                        {!following ? <div>Follow</div> : <div>Following</div>}
+                   
                   </div>
 
                   <div className="bg-neutral-700 rounded w-50 flex justify-center">
@@ -88,10 +138,10 @@ console.log(user?.username)
                   </div>
                 </div>
               ) : (
-                  <div className="flex gap-5 justify-center pt-6">
-                <div className="bg-neutral-700 rounded w-110 flex justify-center">
-                  Edit
-                </div>
+                <div className="flex gap-5 justify-center pt-6">
+                  <div className="bg-neutral-700 rounded w-110 flex justify-center">
+                    Edit
+                  </div>
                 </div>
               )}
             </div>
@@ -103,6 +153,7 @@ console.log(user?.username)
       <hr></hr>
       <div className="flex ">
         {posts
+
           .filter((post) => post.createdBy.username === userd?.username)
 
           .map((post) => (
