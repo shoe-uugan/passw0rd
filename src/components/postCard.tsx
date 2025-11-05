@@ -46,7 +46,7 @@ export const PostCard = ({ post }: { post: Post }) => {
 
   return (
     <div key={post._id} className="mb-4 border-b py-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-row">
         <Link href={`/${post.createdBy.username}`}>
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" className="rounded-full w-8 h-8" />
