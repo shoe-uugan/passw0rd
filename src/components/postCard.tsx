@@ -49,7 +49,7 @@ export const PostCard = ({ post }: { post: Post }) => {
       <div className="flex justify-between">
         <Link href={`/${post.createdBy.username}`}>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src="https://github.com/shadcn.png" className="rounded w-10 h-10" />
             <AvatarFallback>{post.createdBy.username}</AvatarFallback>
           </Avatar>
           <div className="font-bold text-[17px] pb-2">
