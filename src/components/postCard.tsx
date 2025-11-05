@@ -46,14 +46,16 @@ export const PostCard = ({ post }: { post: Post }) => {
 
   return (
     <div key={post._id} className="mb-4 border-b py-4">
-      <div className="flex justify-between flex-row">
+      <div className="flex justify-between">
         <Link href={`/${post.createdBy.username}`}>
+        <div className="flex flex-row pb-1"> 
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" className="rounded-full w-8 h-8" />
+            <AvatarImage src="https://github.com/shadcn.png" className="rounded-full w-5 h-5" />
             <AvatarFallback>{post.createdBy.username}</AvatarFallback>
           </Avatar>
           <div className="font-bold text-[17px] pb-2">
             {post.createdBy.username}
+          </div>
           </div>
         </Link>
         <div className="text-[12px]">{dayjs(post.createdAt).fromNow()}</div>
