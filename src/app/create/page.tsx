@@ -88,21 +88,7 @@ const [generating, setGenerating] = useState(false);
   };
 
   const handleSubmit = async () => {
-    // const response = await fetch("http://localhost:5500/posts", {
-    //   method: "POST",
-    //   body: JSON.stringify({ imageUrl, description }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    //     Authorization: "BEARER "+token
-    //   },
-    // });
-
-    // const data = await response.json();
-    // if (response.status !== 200) {
-    //   toast.error(data.message);
-    //   return;
-    // }
+    
     if (!selectedFile) {
       toast.error("Please select an image");
       return;
