@@ -10,7 +10,7 @@ import { useAxios } from "../app/hooks/useAxios";
 import { Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Avatar } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 dayjs.extend(relativeTime);
 
@@ -47,9 +47,11 @@ export const PostCard = ({ post }: { post: Post }) => {
   return (
     <div key={post._id} className="mb-4 border-b py-4">
       <div className="flex justify-between">
-        
         <Link href={`/${post.createdBy.username}`}>
-        <Avatar></Avatar>
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>{post.createdBy.username}</AvatarFallback>
+          </Avatar>
           <div className="font-bold text-[17px] pb-2">
             {post.createdBy.username}
           </div>
@@ -79,11 +81,9 @@ export const PostCard = ({ post }: { post: Post }) => {
           <div className="text-[15px]">{likeCount} likes</div>
         </div>
         <div className="flex flex-row gap-1">
-            <Link href={`/comments/${post._id}`}>
-              
-              <MessageCircle />
-              
-            </Link>
+          <Link href={`/comments/${post._id}`}>
+            <MessageCircle />
+          </Link>
           {/* <MessageCircle className="flex " />{" "} */}
           {/* <div className="text-[15px]">{commentCount} comments</div> */}
         </div>
