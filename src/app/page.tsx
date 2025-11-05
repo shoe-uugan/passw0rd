@@ -27,7 +27,22 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <>
+      <div className="flex place-content-center p-70"> 
+      <div className="flex flex-col"> 
+        <img
+          src={
+            "https://upload.wikimedia.org/wikipedia/commons/2/28/Instagram_logo.png"
+          }
+          className="w-30 h-30"
+        ></img>
+        <div className="p-2 pl-5">   instagram</div>
+      
+         </div>
+</div>
+      </>
+    );
   }
 
   if (!user) {

@@ -10,6 +10,7 @@ import { useAxios } from "../app/hooks/useAxios";
 import { Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { Avatar } from "@radix-ui/react-avatar";
 
 dayjs.extend(relativeTime);
 
@@ -46,7 +47,9 @@ export const PostCard = ({ post }: { post: Post }) => {
   return (
     <div key={post._id} className="mb-4 border-b py-4">
       <div className="flex justify-between">
+        
         <Link href={`/${post.createdBy.username}`}>
+        <Avatar></Avatar>
           <div className="font-bold text-[17px] pb-2">
             {post.createdBy.username}
           </div>

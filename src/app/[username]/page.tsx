@@ -82,7 +82,7 @@ console.log(following)
 
   
 console.log(userd)
-  if (loading) return <>Loading...</>;
+  if (loading) return <><img src={"https://image.similarpng.com/file/similarpng/very-thumbnail/2020/07/Instagram-black-and-white-logo-vector-png-(5).png"}></img></>;
   if (isNotFound) return <>User with username {username} not found!</>;
 
 
