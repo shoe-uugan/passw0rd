@@ -140,7 +140,7 @@ console.log(userd)
       formData.append("file", selectedFile);
 
       const uploadResponse = await fetch(`/users/${username}/profile`, {
-        method: "POST",
+        method: "PUT",
         body: formData,
       });
 
@@ -154,7 +154,7 @@ console.log(userd)
 
       const { url: imageUrl } = await uploadResponse.json();
 
-      const response = await axios.post(`/users/${username}/profile`, {
+      const response = await axios.put(`/users/${username}/profile`, {
         imageUrl,
       });
 
@@ -169,9 +169,14 @@ console.log(userd)
     }
   };
 
+  function handleLogout() {
+    localStorage.removeItem("authToken"); 
 
-// console.log(userd?.username)
-// console.log(user?.username)
+    window.location.href = "/signin"; 
+  }
+
+console.log(userd?.username)
+console.log(following)
   return (
     <>
       <div className="w-screen bg-neutral-800 h-[30vh] rounded">
@@ -182,14 +187,22 @@ console.log(userd)
               <ArrowLeft></ArrowLeft>{" "}
             </div>
           </Link>
+
           <div className="flex flex-row pl-10">
             <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                className="h-60 w-60 rounded-full"
-              />
+              {!previewUrl ? (
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  className="h-60 w-60 rounded-full"
+                />
+              ) : (
+                <AvatarImage
+                  src={previewUrl}
+                  className="h-60 w-60 rounded-full"
+                />
+              )}
               <AvatarFallback className="h-60 w-60 rounded-full">
-                {userd?.username}
+                a
               </AvatarFallback>
             </Avatar>
 
@@ -229,7 +242,14 @@ console.log(userd)
               ) : (
                 <div className="flex flex-row gap-2">
                   <div className="flex gap-5 justify-center pt-6">
-                    <div className="bg-neutral-700 rounded w-110 flex justify-center">
+                    <Button
+                      onClick={handleLogout}
+                      className="bg-neutral-700 rounded w-30 font-bold flex justify-center opacity-50"
+                      variant={"ghost"}
+                    >
+                      Log out
+                    </Button>
+                    <div className="bg-neutral-700 rounded w-80 flex justify-center">
                       <Button
                         onClick={handleSubmit}
                         className="font-bold"
@@ -246,11 +266,8 @@ console.log(userd)
                       htmlFor="file-upload"
                       className="cursor-pointer h-10 w-10"
                     >
-                     
-                          <Upload className="w-12 h-12 text-gray-400 mb-2" />
-                          <span className="text-sm text-gray-600">
-                          </span>
-                       
+                      <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-600"></span>
                     </label>
                     <Input
                       id="file-upload"
